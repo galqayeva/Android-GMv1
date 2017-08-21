@@ -15,7 +15,7 @@ import com.example.telim2.gmv1.R;
 
 public class Fragment3 extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment1,container,false);
+        View view=inflater.inflate(R.layout.fragment3,container,false);
 
 
 
