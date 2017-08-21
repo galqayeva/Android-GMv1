@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.example.telim2.gmv1.MainActivity;
 import com.example.telim2.gmv1.R;
+import com.example.telim2.gmv1.Upload;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -45,7 +46,9 @@ public class Fragment3 extends Fragment   {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment3,container,false);
 
-        storageReference= FirebaseStorage.getInstance().getReference();
+       // storageReference=FirebaseStorage.getInstance().getReference();
+
+
 
         buttonChoose = (Button) view.findViewById(R.id.buttonChoose);
         buttonUpload = (Button) view.findViewById(R.id.buttonUpload);
@@ -62,7 +65,11 @@ public class Fragment3 extends Fragment   {
         buttonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                uploadFile();
+               // uploadFile();
+                Intent intent = new Intent(getActivity(), Upload.class);
+
+                intent.putExtra("ok", "ok");
+                startActivity(intent);
             }
         });
 
@@ -98,44 +105,25 @@ public class Fragment3 extends Fragment   {
     private void uploadFile() {
         if (filePath != null) {
 
+
             StorageReference riversRef = storageReference.child("images/pic.jpg");
             riversRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //if the upload is successfull
-                            //hiding the progress dialog
-                            //progressDialog.dismiss();
-
-                            //and displaying a success toast
                             Toast.makeText(getActivity(), "File Uploaded ", Toast.LENGTH_LONG).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            //if the upload is not successfull
-                            //hiding the progress dialog
-                           // progressDialog.dismiss();
 
-                            //and displaying error message
                             Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_LONG).show();
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            //calculating progress percentage
-                           // double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
-                            //displaying percentage in progress dialog
-                            //progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
                         }
                     });
         }
-        //if there is not any file
         else {
-            //you can display an error toast
+
         }
     }
 
