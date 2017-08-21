@@ -33,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Fragment1(), "TAB1");
-        adapter.addFragment(new Fragment2(), "TAB2");
+        adapter.addFragment(new Fragment2(), "TAB1");
+        adapter.addFragment(new Fragment1(), "TAB2");
         adapter.addFragment(new Fragment3(), "TAB3");
         viewPager.setAdapter(adapter);
     }
