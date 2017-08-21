@@ -29,7 +29,7 @@ public class Model {
         this.lan = lan;
     }
 
-    public String getName() {
+    public  String getName() {
         return name;
     }
 
