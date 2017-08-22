@@ -1,7 +1,6 @@
 package com.example.telim2.gmv1.fragments;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
@@ -17,15 +16,24 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.telim2.gmv1.MainActivity;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.example.telim2.gmv1.Adapters.Model;
+import com.example.telim2.gmv1.Adapters.MyAdapter;
+import com.example.telim2.gmv1.Adapters.MySingleTon;
 import com.example.telim2.gmv1.R;
-import com.example.telim2.gmv1.Upload;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 
@@ -42,11 +50,12 @@ public class Fragment3 extends Fragment   {
     private ImageView imageView;
     private Uri filePath;
     private StorageReference storageReference;
+    private String url="";
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment3,container,false);
 
-       // storageReference=FirebaseStorage.getInstance().getReference();
+       storageReference=FirebaseStorage.getInstance().getReference();
 
 
 
@@ -65,14 +74,27 @@ public class Fragment3 extends Fragment   {
         buttonUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // uploadFile();
-                Intent intent = new Intent(getActivity(), Upload.class);
+                uploadFile();
 
-                intent.putExtra("ok", "ok");
-                startActivity(intent);
             }
         });
 
+
+        StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+        );
+        MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest);
 
 
 
@@ -103,27 +125,53 @@ public class Fragment3 extends Fragment   {
     }
 
     private void uploadFile() {
+        //if there is a file to upload
         if (filePath != null) {
-
+            //displaying a progress dialog while upload is going on
+            final ProgressDialog progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setTitle("Uploading");
+            progressDialog.show();
 
             StorageReference riversRef = storageReference.child("images/pic.jpg");
             riversRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            //if the upload is successfull
+                            //hiding the progress dialog
+                            progressDialog.dismiss();
+
+                            //and displaying a success toast
                             Toast.makeText(getActivity(), "File Uploaded ", Toast.LENGTH_LONG).show();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
+                            //if the upload is not successfull
+                            //hiding the progress dialog
+                            progressDialog.dismiss();
 
+                            //and displaying error message
                             Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_LONG).show();
                         }
-                    });
-        }
-        else {
+                    })
+                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                            //calculating progress percentage
+                            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
+                            //displaying percentage in progress dialog
+                            progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
+                        }
+                    })
+
+            ;
+        }
+        //if there is not any file
+        else {
+            //you can display an error toast
         }
     }
 

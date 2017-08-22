@@ -35,7 +35,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBTpzRpZ2Be4zq5TMfCupjSruw8MeXHda8" />
 
-        <activity android:name=".Upload"></activity>
     </application>
 
 </manifest>
