@@ -24,7 +24,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-       // storageReference= FirebaseStorage.getInstance().getReference();
 
         mSectionsPageAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
@@ -34,13 +33,18 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        tabLayout.getTabAt(0).setIcon(R.drawable.restauran);
+        tabLayout.getTabAt(1).setIcon(R.drawable.comm);
+        tabLayout.getTabAt(2).setIcon(R.drawable.user);
+
     }
 
     private void setupViewPager(ViewPager viewPager) {
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
-        adapter.addFragment(new Fragment2(), "TAB1");
-        adapter.addFragment(new Fragment1(), "TAB2");
-        adapter.addFragment(new Fragment3(), "TAB3");
+
+        adapter.addFragment(new Fragment2());
+        adapter.addFragment(new Fragment1());
+        adapter.addFragment(new Fragment3());
         viewPager.setAdapter(adapter);
     }
 
