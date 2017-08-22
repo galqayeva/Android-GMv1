@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -30,6 +31,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -51,6 +53,8 @@ public class Fragment3 extends Fragment   {
     private Uri filePath;
     private StorageReference storageReference;
     private String url="";
+    private String imageLink;
+    TextView tw;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment3,container,false);
@@ -58,7 +62,7 @@ public class Fragment3 extends Fragment   {
        storageReference=FirebaseStorage.getInstance().getReference();
 
 
-
+        tw=(TextView)view.findViewById(R.id.textView2);
         buttonChoose = (Button) view.findViewById(R.id.buttonChoose);
         buttonUpload = (Button) view.findViewById(R.id.buttonUpload);
 
@@ -79,22 +83,9 @@ public class Fragment3 extends Fragment   {
             }
         });
 
+        Picasso.with(getActivity()).load("http://i.imgur.com/DvpvklR.png").into(imageView);
 
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-
-                    }
-                }
-        );
-        MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest);
 
 
 
@@ -132,7 +123,40 @@ public class Fragment3 extends Fragment   {
             progressDialog.setTitle("Uploading");
             progressDialog.show();
 
-            StorageReference riversRef = storageReference.child("images/pic.jpg");
+
+            StorageReference riversRef = storageReference.child("pics/"+filePath.getLastPathSegment());
+
+
+            riversRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>()
+            {
+                @Override
+                public void onSuccess(Uri downloadUrl)
+                {
+                    imageLink=downloadUrl.toString();
+                    url="http://gunaya.000webhostapp.com/gmv1/imageLinkInsert.php?registerId=218d705c367c6559&imageLink="+imageLink;
+                    StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Toast.makeText(getActivity(),"eeee",Toast.LENGTH_LONG).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(getActivity(),"not okkkk",Toast.LENGTH_LONG).show();
+                                }
+                            }
+                    );
+                    MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest);
+
+
+
+
+                }
+            });
+
+
             riversRef.putFile(filePath)
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
