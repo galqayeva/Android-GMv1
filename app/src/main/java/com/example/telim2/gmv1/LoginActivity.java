@@ -31,11 +31,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+
         editTextUsername=(EditText)findViewById(R.id.etUsername);
         btn=(Button)findViewById(R.id.btnRegister);
 
         registerId = Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+
+
 
 
 
@@ -67,4 +71,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
     }
+
+
 }

@@ -49,6 +49,8 @@ public class MainActivity extends AppCompatActivity {
 
                                     startActivity(intent);
 
+
+
                         }
 
                     }
@@ -86,6 +88,10 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-
+        startActivity(intent);
+    }
 }
