@@ -31,34 +31,15 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        editTextUsername=(EditText)findViewById(R.id.etUsername);
+        btn=(Button)findViewById(R.id.btnRegister);
 
         registerId = Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-        url2="http://gunaya.000webhostapp.com/gmv1/check.php?registerId="+registerId;
 
 
-        StringRequest stringRequest2=new StringRequest(Request.Method.POST, url2,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        if (response=="ok"){
-                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
 
-                        startActivity(intent);}
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getApplicationContext(),error.getMessage(),Toast.LENGTH_LONG).show();
-                    }
-                }
-        );
-        MySingleTon.getInstance(getApplicationContext()).addToRequestQueue(stringRequest2);
-
-        editTextUsername=(EditText)findViewById(R.id.etUsername);
-        btn=(Button)findViewById(R.id.btnRegister);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,11 +66,5 @@ public class LoginActivity extends AppCompatActivity {
 
             }
         });
-
-
-
-
-
-
     }
 }

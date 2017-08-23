@@ -29,7 +29,6 @@ public class GPSTracker extends Service implements LocationListener {
         this.context=context;
     }
 
-    //Create a GetLocation Method //
     public  Location getLocation(){
         try{
 
@@ -48,7 +47,6 @@ public class GPSTracker extends Service implements LocationListener {
                         }
                     }
                 }
-                // if lcoation is not found from GPS than it will found from network //
                 if(location==null){
                     if(isNetworkEnabled){
 
@@ -68,7 +66,6 @@ public class GPSTracker extends Service implements LocationListener {
         return  location;
     }
 
-    // followings are the default method if we imlement LocationListener //
     public void onLocationChanged(Location location){
 
     }
