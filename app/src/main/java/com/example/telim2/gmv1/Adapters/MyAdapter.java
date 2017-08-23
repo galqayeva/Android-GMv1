@@ -39,6 +39,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     private List<Model> modelList;
     private Context context;
     String url;
+
     String registerId,name,lon,lat;
 
     public MyAdapter(List<Model> modelListt, Context context) {
@@ -57,9 +58,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         final Model model=modelList.get(position);
-       // holder.buttonAdd.setText("add");
+        holder.buttonAdd.setText("add");
         name=model.getName();
         lon=model.getLon();
         lat=model.getLan();
@@ -67,7 +68,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         url="http://172.16.200.200/GMv1/insertRest.php?restName="+name+"&lon="+lon+"&lat="+lat+"&registerId="+registerId+"&onrest=1";
 
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
+        holder.buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
@@ -75,13 +76,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                             @Override
                             public void onResponse(String response) {
 
-                                Toast.makeText(context,Integer.toString(position),Toast.LENGTH_LONG).show();
+                               Toast.makeText(context,url,Toast.LENGTH_LONG).show();
                             }
                         },
                         new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
+                                Toast.makeText(context,"noot",Toast.LENGTH_LONG).show();
                             }
                         }
                 );
@@ -110,8 +111,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             super(itemView);
 
             textViewFriend=(TextView)itemView.findViewById(R.id.restaurantName);
-          // buttonAdd=(Button)itemView.findViewById(R.id.addButton);
-            checkBox=(CheckBox)itemView.findViewById(R.id.checkbox);
+          buttonAdd=(Button)itemView.findViewById(R.id.addButton);
+          //  checkBox=(CheckBox)itemView.findViewById(R.id.checkbox);
         }
     }
 }
