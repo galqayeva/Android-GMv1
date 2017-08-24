@@ -95,7 +95,6 @@ public class Fragment2 extends Fragment {
 
                             }
 
-
                             adapter=new MyAdapter(modelList,getActivity());
                             recyclerView.setAdapter(adapter);
 

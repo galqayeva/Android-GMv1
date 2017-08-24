@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                url="https://gunaya.000webhostapp.com/gmv1/insert.php?registerId="+registerId+"&username="+editTextUsername.getText();
+                url="http://172.16.200.200/GMv1/insert.php?registerId="+registerId+"&username="+editTextUsername.getText();
 
                 StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
                         new Response.Listener<String>() {

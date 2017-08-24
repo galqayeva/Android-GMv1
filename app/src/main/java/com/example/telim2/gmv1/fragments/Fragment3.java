@@ -6,6 +6,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,12 +18,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.telim2.gmv1.Adapters.Model;
-import com.example.telim2.gmv1.Adapters.MyAdapter;
 import com.example.telim2.gmv1.Adapters.MySingleTon;
 import com.example.telim2.gmv1.R;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -33,11 +33,10 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -55,11 +54,17 @@ public class Fragment3 extends Fragment   {
     private String url="";
     private String imageLink;
     TextView tw;
-
+    String registerId;
+    String urlPicture;
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment3,container,false);
 
        storageReference=FirebaseStorage.getInstance().getReference();
+
+        registerId = Settings.Secure.getString(getActivity().getContentResolver(),
+                Settings.Secure.ANDROID_ID);
+
+
 
 
         tw=(TextView)view.findViewById(R.id.textView2);
@@ -83,8 +88,7 @@ public class Fragment3 extends Fragment   {
             }
         });
 
-        Picasso.with(getActivity()).load("http://i.imgur.com/DvpvklR.png").into(imageView);
-
+        loadImage();
 
 
 
@@ -93,18 +97,34 @@ public class Fragment3 extends Fragment   {
 
     }
 
+    public void loadImage(){
+        urlPicture="http://172.16.200.200/GMv1/selectImageUrl.php?registerId="+registerId;
+
+        StringRequest stringRequest2=new StringRequest(Request.Method.POST, urlPicture,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        Picasso.with(getActivity()).load(response).into(imageView);
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getActivity(),error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+                }
+        );
+        MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest2);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
             filePath = data.getData();
-            try {
-                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getActivity().getContentResolver(), filePath);
-                imageView.setImageBitmap(bitmap);
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -133,12 +153,13 @@ public class Fragment3 extends Fragment   {
                 public void onSuccess(Uri downloadUrl)
                 {
                     imageLink=downloadUrl.toString();
-                    url="http://gunaya.000webhostapp.com/gmv1/imageLinkInsert.php?registerId=218d705c367c6559&imageLink="+imageLink;
+                    url="http://172.16.200.200/GMv1/insertImage.php";
                     StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    Toast.makeText(getActivity(),"eeee",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getActivity(),imageLink,Toast.LENGTH_LONG).show();
+
                                 }
                             },
                             new Response.ErrorListener() {
@@ -147,7 +168,16 @@ public class Fragment3 extends Fragment   {
                                     Toast.makeText(getActivity(),"not okkkk",Toast.LENGTH_LONG).show();
                                 }
                             }
-                    );
+                    ){
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("registerId",registerId);
+                            params.put("imageLink",imageLink);
+
+                            return params;
+                        }
+                    };
                     MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest);
 
 
@@ -161,41 +191,33 @@ public class Fragment3 extends Fragment   {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            //if the upload is successfull
-                            //hiding the progress dialog
+
                             progressDialog.dismiss();
 
-                            //and displaying a success toast
                             Toast.makeText(getActivity(), "File Uploaded ", Toast.LENGTH_LONG).show();
+
+                            loadImage();
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception exception) {
-                            //if the upload is not successfull
-                            //hiding the progress dialog
                             progressDialog.dismiss();
-
-                            //and displaying error message
                             Toast.makeText(getActivity(), exception.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     })
                     .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            //calculating progress percentage
+
                             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
 
-                            //displaying percentage in progress dialog
+
                             progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
                         }
                     })
 
             ;
-        }
-        //if there is not any file
-        else {
-            //you can display an error toast
         }
     }
 

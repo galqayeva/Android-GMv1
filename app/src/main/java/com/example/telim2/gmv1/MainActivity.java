@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         registerId = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-        url2="http://gunaya.000webhostapp.com/gmv1/check.php?registerId="+registerId;
+        url2="http://172.16.200.200/GMv1/check.php?registerId="+registerId;
 
 
         StringRequest stringRequest2=new StringRequest(Request.Method.POST, url2,
@@ -88,10 +88,10 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-
-        startActivity(intent);
-    }
+//    @Override
+//    public void onBackPressed() {
+//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//
+//        startActivity(intent);
+//    }
 }
