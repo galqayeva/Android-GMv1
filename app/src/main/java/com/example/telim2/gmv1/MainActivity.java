@@ -23,11 +23,11 @@ import com.google.firebase.storage.StorageReference;
 public class MainActivity extends AppCompatActivity {
 
 
-    private SectionsPageAdapter mSectionsPageAdapter;
-    private ViewPager mViewPager;
-    String registerId,url2;
+    //private SectionsPageAdapter mSectionsPageAdapter;
+    //private ViewPager mViewPager;
+    //String registerId,url2;
 
-    private StorageReference storageReference;
+    //private StorageReference storageReference;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
