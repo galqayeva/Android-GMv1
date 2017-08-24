@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,9 +42,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     String url;
 
     String registerId,name,lon,lat;
+    String ok="ok";
 
-    public MyAdapter(List<Model> modelListt, Context context) {
-        this.modelList=modelListt;
+    public MyAdapter(List<Model> modelList, Context context) {
+        this.modelList=modelList;
         this.context = context;
     }
 
@@ -58,35 +60,59 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Model model=modelList.get(position);
         holder.buttonAdd.setText("add");
-        name=model.getName();
-        lon=model.getLon();
-        lat=model.getLan();
-        holder.textViewFriend.setText(name);
 
-        url="http://172.16.200.200/GMv1/insertRest.php?restName="+name+"&lon="+lon+"&lat="+lat+"&registerId="+registerId+"&onrest=1";
+        holder.textViewFriend.setText(model.getName());
+
+        url="http://172.16.200.200/GMv1/insertRest.php";
+
+
 
         holder.buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
 
-                               Toast.makeText(context,url,Toast.LENGTH_LONG).show();
+                if (ok.equals("ok")){
+
+
+                    StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+
+                                    Toast.makeText(context,model.getName(),Toast.LENGTH_LONG).show();
+                                }
+                            },
+                            new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Toast.makeText(context,url,Toast.LENGTH_LONG).show();
+                                }
                             }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Toast.makeText(context,"noot",Toast.LENGTH_LONG).show();
-                            }
+                    ){
+
+                        @Override
+                        protected Map<String, String> getParams() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<>();
+                            params.put("restName",model.getName());
+                            params.put("lon",model.getLon());
+                            params.put("lat",model.getLan());
+                            params.put("registerId",registerId);
+                            params.put("onrest","1");
+                            return params;
                         }
-                );
-                MySingleTon.getInstance(context).addToRequestQueue(stringRequest);
+                    };
+                    MySingleTon.getInstance(context).addToRequestQueue(stringRequest);
+
+                    //ok="not";
+                }else{
+
+                    Toast.makeText(context,"caannnnnooot",Toast.LENGTH_LONG).show();
+                }
+
+
             }
         });
 
@@ -104,15 +130,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView textViewFriend;
         public Button buttonAdd;
-        public ImageView imageView;
-        public CheckBox checkBox;
+        public LinearLayout linearLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             textViewFriend=(TextView)itemView.findViewById(R.id.restaurantName);
           buttonAdd=(Button)itemView.findViewById(R.id.addButton);
-          //  checkBox=(CheckBox)itemView.findViewById(R.id.checkbox);
+            linearLayout=(LinearLayout)itemView.findViewById(R.id.linearLayout);
         }
     }
 }
