@@ -6,7 +6,7 @@ android:id="@+id/main_content"
 android:layout_width="match_parent"
 android:layout_height="match_parent"
 android:fitsSystemWindows="true"
-tools:context="com.example.telim2.gmv1.LoginActivity"
+tools:context="com.example.telim2.gmv1.Activities.LoginActivity"
     android:background="@drawable/gradient"
   >
 

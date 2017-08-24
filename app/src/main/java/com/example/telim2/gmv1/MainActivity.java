@@ -6,18 +6,17 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.telim2.gmv1.Adapters.MySingleTon;
-import com.example.telim2.gmv1.Adapters.SectionsPageAdapter;
+import com.example.telim2.gmv1.Activities.LoginActivity;
+import com.example.telim2.gmv1.Utils.MySingleTon;
+import com.example.telim2.gmv1.Utils.SectionsPageAdapter;
 import com.example.telim2.gmv1.fragments.Fragment1;
 import com.example.telim2.gmv1.fragments.Fragment2;
 import com.example.telim2.gmv1.fragments.Fragment3;
-import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 
@@ -88,10 +87,4 @@ public class MainActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
     }
 
-//    @Override
-//    public void onBackPressed() {
-//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//
-//        startActivity(intent);
-//    }
 }

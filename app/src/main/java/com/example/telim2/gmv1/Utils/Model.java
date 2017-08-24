@@ -1,4 +1,4 @@
-package com.example.telim2.gmv1.Adapters;
+package com.example.telim2.gmv1.Utils;
 
 /**
  * Created by telim2 on 21.08.2017.

@@ -1,4 +1,4 @@
-package com.example.telim2.gmv1;
+package com.example.telim2.gmv1.Activities;
 
 import android.content.Intent;
 import android.provider.Settings;
@@ -15,7 +15,9 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.telim2.gmv1.Adapters.MySingleTon;
+import com.example.telim2.gmv1.Utils.MySingleTon;
+import com.example.telim2.gmv1.MainActivity;
+import com.example.telim2.gmv1.R;
 
 public class LoginActivity extends AppCompatActivity {
 

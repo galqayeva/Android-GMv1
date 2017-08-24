@@ -1,4 +1,4 @@
-package com.example.telim2.gmv1.Adapters;
+package com.example.telim2.gmv1.Utils;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

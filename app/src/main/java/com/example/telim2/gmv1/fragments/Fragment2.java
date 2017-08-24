@@ -9,7 +9,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,16 +16,15 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.example.telim2.gmv1.Adapters.GPSTracker;
-import com.example.telim2.gmv1.Adapters.Model;
-import com.example.telim2.gmv1.Adapters.MyAdapter;
-import com.example.telim2.gmv1.Adapters.MySingleTon;
+import com.example.telim2.gmv1.Utils.GPSTracker;
+import com.example.telim2.gmv1.Utils.Model;
+import com.example.telim2.gmv1.Utils.MyAdapter;
+import com.example.telim2.gmv1.Utils.MySingleTon;
 import com.example.telim2.gmv1.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
