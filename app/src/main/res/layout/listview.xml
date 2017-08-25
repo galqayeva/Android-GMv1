@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <android.support.v7.widget.CardView
@@ -17,12 +18,18 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight=".50"
-                android:text="Friend" />
+                android:text="Friend"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
             <Button
                 android:id="@+id/addButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.10"
+                android:width="15dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="12dp"
+                android:background="#0091EA"
+                android:textColor="@color/colorButtonTextColor"
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
                 />
 
 
