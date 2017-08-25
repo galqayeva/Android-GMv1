@@ -31,9 +31,6 @@ import java.util.Map;
 import static android.content.Context.MODE_PRIVATE;
 
 
-/**
- * Created by telim2 on 01.08.2017.
- */
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
@@ -42,7 +39,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     String url;
 
     String registerId,name,lon,lat;
-    String ok="ok";
+    int ok=1;
 
     public MyAdapter(List<Model> modelList, Context context) {
         this.modelList=modelList;
@@ -55,6 +52,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         registerId = Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
+
+//        SharedPreferences sharedPreferences=MainActivity.this.getSharedPreferences(getString(R.string.file),MODE_PRIVATE);
+//        SharedPreferences.Editor editor=sharedPreferences.edit();
+//        editor.putString(getString(R.string.username),username);
+//        editor.commit();
 
         return new ViewHolder(v);
     }
@@ -74,7 +76,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             @Override
             public void onClick(View view) {
 
-                if (ok.equals("ok")){
+                if (ok==1){
 
 
                     StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
@@ -106,7 +108,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     };
                     MySingleTon.getInstance(context).addToRequestQueue(stringRequest);
 
-                    //ok="not";
+                    holder.buttonAdd.setText("ok");
                 }else{
 
                     Toast.makeText(context,"caannnnnooot",Toast.LENGTH_LONG).show();
@@ -126,10 +128,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
     public void saveSettings() {
 
-//            SharedPreferences sharedPreferences=MainActivity.this.getSharedPreferences(getString(R.string.file),MODE_PRIVATE);
-//            SharedPreferences.Editor editor=sharedPreferences.edit();
-//            editor.putString(getString(R.string.username),username);
-//            editor.commit();
+
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{

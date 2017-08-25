@@ -44,13 +44,9 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if (!response.equals("ok")){
-
                                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
                                     startActivity(intent);
-
-
-
                         }
 
                     }
