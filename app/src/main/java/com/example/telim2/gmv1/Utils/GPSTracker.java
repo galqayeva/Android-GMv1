@@ -13,7 +13,7 @@ import android.os.IBinder;
 import android.support.v4.content.ContextCompat;
 
 /**
- * Created by telim2 on 21.08.2017.
+ * Created by galqayeva on 21.08.2017.
  */
 public class GPSTracker extends Service implements LocationListener {
 

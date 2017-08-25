@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.example.telim2.gmv1.R;
 
 /**
- * Created by telim2 on 21.08.2017.
+ * Created by galqayeva on 21.08.2017.
  */
 
 public class Fragment1 extends Fragment {

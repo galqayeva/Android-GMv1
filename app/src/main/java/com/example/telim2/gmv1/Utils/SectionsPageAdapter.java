@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by telim2 on 21.08.2017.
+ * Created by galqayeva on 21.08.2017.
  */
 
 

@@ -1,7 +1,7 @@
 package com.example.telim2.gmv1.Utils;
 
 /**
- * Created by telim2 on 21.08.2017.
+ * Created by galqayeva on 21.08.2017.
  */
 
 public class Model {

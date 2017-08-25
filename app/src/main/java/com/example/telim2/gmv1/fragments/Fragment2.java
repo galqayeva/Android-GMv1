@@ -69,7 +69,7 @@ public class Fragment2 extends Fragment {
         progressDialog.show();
 
         loadRestaurants();
-        
+
         return view;
 
     }

@@ -38,7 +38,7 @@ import java.util.Map;
 import static android.app.Activity.RESULT_OK;
 
 /**
- * Created by telim2 on 21.08.2017.
+ * Created by galqayeva on 21.08.2017.
  */
 
 public class Fragment3 extends Fragment   {
@@ -61,13 +61,9 @@ public class Fragment3 extends Fragment   {
         registerId = Settings.Secure.getString(getActivity().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-
-
-
         tw=(TextView)view.findViewById(R.id.textView2);
         buttonChoose = (Button) view.findViewById(R.id.buttonChoose);
         buttonUpload = (Button) view.findViewById(R.id.buttonUpload);
-
         imageView = (ImageView) view.findViewById(R.id.imageView);
 
         buttonChoose.setOnClickListener(new View.OnClickListener() {
@@ -86,8 +82,6 @@ public class Fragment3 extends Fragment   {
         });
 
         loadImage();
-
-
 
 
         return view;
