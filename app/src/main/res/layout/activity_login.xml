@@ -23,7 +23,9 @@ tools:context="com.example.telim2.gmv1.Activities.LoginActivity"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="111dp"
-            android:text="Welcome GMv1 " />
+            android:text="Welcome GMv1 "
+            android:textColor="@color/colorButtonTextColor"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
 
         <EditText
             android:id="@+id/etUsername"

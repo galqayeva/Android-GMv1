@@ -5,6 +5,7 @@ package com.example.telim2.gmv1.Utils;
  */
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -20,11 +21,14 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.telim2.gmv1.MainActivity;
 import com.example.telim2.gmv1.R;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.content.Context.MODE_PRIVATE;
 
 
 /**
@@ -118,6 +122,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public int getItemCount() {
         return modelList.size();
+    }
+
+    public void saveSettings() {
+
+//            SharedPreferences sharedPreferences=MainActivity.this.getSharedPreferences(getString(R.string.file),MODE_PRIVATE);
+//            SharedPreferences.Editor editor=sharedPreferences.edit();
+//            editor.putString(getString(R.string.username),username);
+//            editor.commit();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
