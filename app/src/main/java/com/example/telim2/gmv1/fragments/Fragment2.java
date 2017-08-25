@@ -1,5 +1,6 @@
 package com.example.telim2.gmv1.fragments;
 
+import android.app.ProgressDialog;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -30,12 +31,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by telim2 on 21.08.2017.
+ * Created by galqayeva on 21.08.2017.
  */
 
 public class Fragment2 extends Fragment {
-
-
 
     private GPSTracker gpsTracker;
     private Location mLocation;
@@ -45,6 +44,7 @@ public class Fragment2 extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<Model> modelList;
+    private ProgressDialog progressDialog;
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -60,16 +60,21 @@ public class Fragment2 extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
         modelList=new ArrayList<>();
 
-
-
         url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+Double.toString(latitude)+","+Double.toString(longitude)+"&radius=500&type=restaurant&key=AIzaSyC3_ndLS93DsNFqSB-78VuA00A0hrI8B5A";
-        //url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.404654,49.8722473&radius=500&type=restaurant&key=AIzaSyC3_ndLS93DsNFqSB-78VuA00A0hrI8B5A";
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("Getting Restaurants");
+        progressDialog.show();
 
+        loadRestaurants();
+        
+        return view;
 
+    }
+
+    public void loadRestaurants(){
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
                     @Override
@@ -90,15 +95,14 @@ public class Fragment2 extends Fragment {
                                 Model item=new Model(lan,lat,location);
                                 modelList.add(item);
 
-
                             }
 
                             adapter=new MyAdapter(modelList,getActivity());
                             recyclerView.setAdapter(adapter);
+                            progressDialog.dismiss();
 
                         } catch (JSONException e) {
-                            Toast.makeText(getActivity(), e.getMessage(),Toast.LENGTH_LONG).show();
-
+                            Toast.makeText(getActivity(), "Something wrong with json" ,Toast.LENGTH_LONG).show();
                             e.printStackTrace();
                         }
 
@@ -108,16 +112,11 @@ public class Fragment2 extends Fragment {
                     @Override
                     public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText(getActivity(), "not ok",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Check Your Internet Connection",Toast.LENGTH_LONG).show();
                     }
                 }
 
         );
         MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest);
-
-
-
-        return view;
-
     }
 }

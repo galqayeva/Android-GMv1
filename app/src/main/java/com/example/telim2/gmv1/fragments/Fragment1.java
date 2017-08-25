@@ -15,7 +15,7 @@ import com.example.telim2.gmv1.R;
  */
 
 public class Fragment1 extends Fragment {
-    
+
 
     @Nullable
     @Override
