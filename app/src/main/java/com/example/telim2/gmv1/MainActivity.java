@@ -26,29 +26,29 @@ public class MainActivity extends AppCompatActivity {
 
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
-    String registerId,url2;
-
+    private String registerId,url2;
     private StorageReference storageReference;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         registerId = Settings.Secure.getString(getApplicationContext().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
         url2="http://172.16.200.200/GMv1/check.php?registerId="+registerId;
-
 
         StringRequest stringRequest2=new StringRequest(Request.Method.POST, url2,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         if (!response.equals("ok")){
-                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
 
+                                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                                     startActivity(intent);
                         }
-
                     }
                 },
                 new Response.ErrorListener() {
@@ -76,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupViewPager(ViewPager viewPager) {
-        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
 
+        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new Fragment2());
         adapter.addFragment(new Fragment1());
         adapter.addFragment(new Fragment3());
