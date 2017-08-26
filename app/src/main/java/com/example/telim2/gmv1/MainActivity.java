@@ -7,7 +7,6 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
-
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -20,10 +19,8 @@ import com.example.telim2.gmv1.fragments.Fragment2;
 import com.example.telim2.gmv1.fragments.Fragment3;
 import com.google.firebase.storage.StorageReference;
 
-
 public class MainActivity extends AppCompatActivity {
-
-
+    
     private SectionsPageAdapter mSectionsPageAdapter;
     private ViewPager mViewPager;
     private String registerId,url2;
