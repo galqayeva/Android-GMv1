@@ -48,15 +48,13 @@ public class Fragment3 extends Fragment   {
     private ImageView imageView;
     private Uri filePath;
     private StorageReference storageReference;
-    private String url="";
-    private String imageLink;
-    TextView tw;
-    String registerId;
-    String urlPicture;
+    private String imageLink,registerId,urlPicture,url="";
+    private TextView tw;
+
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment3,container,false);
 
-       storageReference=FirebaseStorage.getInstance().getReference();
+        storageReference=FirebaseStorage.getInstance().getReference();
 
         registerId = Settings.Secure.getString(getActivity().getContentResolver(),
                 Settings.Secure.ANDROID_ID);
@@ -82,7 +80,6 @@ public class Fragment3 extends Fragment   {
         });
 
         loadImage();
-
 
         return view;
 
