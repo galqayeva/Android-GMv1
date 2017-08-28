@@ -99,7 +99,7 @@ public class Fragment2 extends Fragment {
 
                             adapter=new MyAdapter(modelList,getActivity());
                             recyclerView.setAdapter(adapter);
-                            //Toast.makeText(getActivity(),"okkwefre",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getActivity(),"okkwefre",Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
 
                         } catch (JSONException e) {
