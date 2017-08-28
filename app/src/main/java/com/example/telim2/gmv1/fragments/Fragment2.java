@@ -43,9 +43,11 @@ public class Fragment2 extends Fragment {
     private ProgressDialog progressDialog;
 
 
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment2,container,false);
+
 
         gpsTracker = new GPSTracker(getActivity());
         mLocation = gpsTracker.getLocation();
