@@ -73,6 +73,8 @@ public class Fragment2 extends Fragment {
 
     }
 
+
+
     public void loadRestaurants(){
         StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
                 new Response.Listener<String>() {
