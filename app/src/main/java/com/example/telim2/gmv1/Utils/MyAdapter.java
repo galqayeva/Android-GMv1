@@ -53,8 +53,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         registerId = Settings.Secure.getString(context.getContentResolver(),
                 Settings.Secure.ANDROID_ID);
 
-//        SharedPreferences sharedPreferences=MainActivity.this.getSharedPreferences(getString(R.string.file),MODE_PRIVATE);
-//        SharedPreferences.Editor editor=sharedPreferences.edit()
+//        SharedPreferences sharedPreferences=MainActivity.this.getSharedPreferences(getString(R.string.file),MODE_PRIVAT
 
         return new ViewHolder(v);
     }
