@@ -54,7 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                 Settings.Secure.ANDROID_ID);
 
 //        SharedPreferences sharedPreferences=MainActivity.this.getSharedPreferences(getString(R.string.file),MODE_PRIVATE);
-//        SharedPreferences.Editor editor=sharedPreferences.edit();
+//        SharedPreferences.Editor editor=sharedPreferences.edit()
 
         return new ViewHolder(v);
     }
