@@ -179,11 +179,9 @@ public class Fragment3 extends Fragment   {
                     .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-
                             progressDialog.dismiss();
 
                             Toast.makeText(getActivity(), "File Uploaded ", Toast.LENGTH_LONG).show();
-
                             loadImage();
                         }
                     })
@@ -199,7 +197,6 @@ public class Fragment3 extends Fragment   {
                         public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
 
                             double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
-
 
                             progressDialog.setMessage("Uploaded " + ((int) progress) + "%...");
                         }
