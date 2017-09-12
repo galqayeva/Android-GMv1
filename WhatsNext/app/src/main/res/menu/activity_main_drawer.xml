@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_profile"
+
+            android:icon="@drawable/ic_person_black_24dp"
+            android:title="@string/profil" />
+        <item
+            android:id="@+id/nav_manage"
+            android:icon="@drawable/ic_menu_manage"
+            android:title="@string/tools" />
+    </group>
+
+    <item android:title="@string/exit">
+        <menu>
+            <item
+                android:id="@+id/nav_logout"
+                android:icon="@drawable/ic_cloud_off_black_24dp"
+                android:title="@string/log_out" />
+            <item
+                android:id="@+id/nav_exit"
+                android:icon="@drawable/ic_portable_wifi_off_black_24dp"
+                android:title="@string/exit" />
+        </menu>
+    </item>
+
+</menu>

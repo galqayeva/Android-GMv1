@@ -1,0 +1,29 @@
+<resources>
+    <string name="app_name">WhatsNext</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="img">img</string>
+    <string name="ad">Ad</string>
+    <string name="username">Username</string>
+    <string name="t_sdiql">Təsdiqlə</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="pref_key_nighttheme">Night</string>
+    <string name="profil">Profil</string>
+    <string name="tools">Tools</string>
+    <string name="exit">Exit</string>
+    <string name="log_out">Log out</string>
+    <string name="e_mail">E-mail</string>
+    <string name="password">Password</string>
+    <string name="log_in">Log In</string>
+    <string name="ifr_ni_unutdun">Şifrəni unutdun?</string>
+    <string name="stifad_i_ad">İstifadəçi Adı</string>
+    <string name="ifr">Şifrə</string>
+    <string name="emailinizi_daxil_edin">Emailinizi daxil edin</string>
+    <string name="text">text</string>
+    <string name="time">time</string>
+    <string name="textview">TextView</string>
+    <string name="user">User</string>
+    <string name="navigation_drawer_open">Open</string>
+    <string name="navigation_drawer_close">Closed</string>
+</resources>
