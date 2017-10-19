@@ -1,12 +1,14 @@
 package com.example.telim2.gmv1.fragments;
 
 import android.app.ProgressDialog;
+import android.database.Cursor;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +18,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.telim2.gmv1.Utils.DatabaseHelper;
 import com.example.telim2.gmv1.Utils.GPSTracker;
 import com.example.telim2.gmv1.Utils.Model;
 import com.example.telim2.gmv1.Utils.MyAdapter;
@@ -41,13 +44,16 @@ public class Fragment2 extends Fragment {
     private RecyclerView.Adapter adapter;
     private List<Model> modelList;
     private ProgressDialog progressDialog;
-
+    DatabaseHelper myDB;
+    int load=0;
 
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment2,container,false);
 
+
+        myDB = new DatabaseHelper(getActivity());
 
         gpsTracker = new GPSTracker(getActivity());
         mLocation = gpsTracker.getLocation();
@@ -68,7 +74,11 @@ public class Fragment2 extends Fragment {
         progressDialog.show();
 
         loadRestaurants();
-
+        if(load==0)
+        {
+            loadListview();
+            load++;
+        }
         return view;
 
     }
@@ -92,14 +102,12 @@ public class Fragment2 extends Fragment {
                                 String lan = jsonobject.getJSONObject("geometry").getJSONObject("location").getString("lng");
                                 String location=jsonobject.getString("name");
 
-                                Model item=new Model(lan,lat,location);
-                                modelList.add(item);
+                                boolean insertData = myDB.addData(location,lan,lat);
+                                if(!insertData==true)
+                                    Log.d("something","getwrong");
 
                             }
 
-                            adapter=new MyAdapter(modelList,getActivity());
-                            recyclerView.setAdapter(adapter);
-                           // Toast.makeText(getActivity(),"okkwefre",Toast.LENGTH_LONG).show();
                             progressDialog.dismiss();
 
                         } catch (JSONException e) {
@@ -119,5 +127,29 @@ public class Fragment2 extends Fragment {
 
         );
         MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest);
+    }
+
+
+    public void loadListview(){
+
+
+        Cursor data = myDB.getAlldata();
+        if(data.getCount() == 0){
+            Toast.makeText(getActivity(), "Ders YOXDUR!",Toast.LENGTH_LONG).show();
+        }else{
+
+
+            int i=1;
+            while(data.moveToNext()){
+                Log.d("salus",data.getString(2)+"--"+"---"+data.getCount());
+
+                Model item=new Model(data.getString(3),data.getString(2),data.getString(1));
+                modelList.add(item);
+
+            }
+
+            adapter=new MyAdapter(modelList,getActivity());
+            recyclerView.setAdapter(adapter);
+        }
     }
 }

@@ -11,12 +11,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "BMM.db";
-    public static final String TABLE_NAME = "bmm";
+    public static final String DATABASE_NAME = "map.db";
+    public static final String TABLE_NAME = "GMTable";
     public static final String COL1 = "ID";
-    public static final String COL2 = "GRADE";
-    public static final String COL3 = "SUBJECT";
-    public static final String COL4 = "DAY";
+    public static final String COL2 = "NAME";
+    public static final String COL3 = "LON";
+    public static final String COL4 = "LAT";
 
 
     public DatabaseHelper(Context context) {
@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String createTable = "CREATE TABLE " + TABLE_NAME + " (ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                " GRADE TEXT,SUBJECT TEXT, DAY TEXT)";
+                " NAME TEXT,LON TEXT, LAT TEXT)";
         db.execSQL(createTable);
     }
 
@@ -36,12 +36,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean addData(String grade,String subject,String day) {
+    public boolean addData(String name,String lon,String lat) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(COL2, grade);
-        contentValues.put(COL3,subject);
-        contentValues.put(COL4,day);
+        contentValues.put(COL2, name);
+        contentValues.put(COL3,lon);
+        contentValues.put(COL4,lat);
 
         long result = db.insert(TABLE_NAME, null, contentValues);
 
