@@ -6,6 +6,7 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -34,7 +35,7 @@ import java.util.List;
  * Created by galqayeva on 21.08.2017.
  */
 
-public class Fragment2 extends Fragment {
+public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
 
     private GPSTracker gpsTracker;
     private Location mLocation;
@@ -44,6 +45,7 @@ public class Fragment2 extends Fragment {
     private RecyclerView.Adapter adapter;
     private List<Model> modelList;
     private ProgressDialog progressDialog;
+    private SwipeRefreshLayout swipeRefreshLayout;
     DatabaseHelper myDB;
     int load=0;
 
@@ -61,6 +63,7 @@ public class Fragment2 extends Fragment {
         latitude = mLocation.getLatitude();
         longitude = mLocation.getLongitude();
 
+        swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout) ;
         recyclerView=(RecyclerView)view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -69,16 +72,13 @@ public class Fragment2 extends Fragment {
 
         url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+Double.toString(latitude)+","+Double.toString(longitude)+"&radius=500&type=restaurant&key=AIzaSyC3_ndLS93DsNFqSB-78VuA00A0hrI8B5A";
 
-        progressDialog = new ProgressDialog(getActivity());
-        progressDialog.setMessage("Getting Restaurants");
-        progressDialog.show();
+
+        swipeRefreshLayout.setOnRefreshListener(this);
+        loadListview();
 
         loadRestaurants();
-        if(load==0)
-        {
-            loadListview();
-            load++;
-        }
+
+
         return view;
 
     }
@@ -86,47 +86,64 @@ public class Fragment2 extends Fragment {
 
 
     public void loadRestaurants(){
-        StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
 
-                        try {
-                            JSONObject jsonObject=new JSONObject(response);
-                            JSONArray jsonArray=jsonObject.getJSONArray("results");
+        if (load==0)
+        {
+            progressDialog = new ProgressDialog(getActivity());
+            progressDialog.setMessage("Getting Restaurants");
+            progressDialog.show();
+            StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
 
-                            for (int i=0;i<jsonArray.length();i++) {
+                            try {
+                                JSONObject jsonObject=new JSONObject(response);
+                                JSONArray jsonArray=jsonObject.getJSONArray("results");
 
-                                JSONObject jsonobject=jsonArray.getJSONObject(i);
-                                String lat = jsonobject.getJSONObject("geometry").getJSONObject("location").getString("lat");
-                                String lan = jsonobject.getJSONObject("geometry").getJSONObject("location").getString("lng");
-                                String location=jsonobject.getString("name");
+                                for (int i=0;i<jsonArray.length();i++) {
 
-                                boolean insertData = myDB.addData(location,lan,lat);
-                                if(!insertData==true)
-                                    Log.d("something","getwrong");
+                                    JSONObject jsonobject=jsonArray.getJSONObject(i);
+                                    String lat = jsonobject.getJSONObject("geometry").getJSONObject("location").getString("lat");
+                                    String lan = jsonobject.getJSONObject("geometry").getJSONObject("location").getString("lng");
+                                    String location=jsonobject.getString("name");
 
+                                    boolean insertData = myDB.addData(location,lan,lat);
+                                    if(!insertData==true)
+                                        Log.d("something","getwrong");
+
+                                }
+                                loadListview();
+                                progressDialog.dismiss();
+
+
+                            } catch (JSONException e) {
+                                Toast.makeText(getActivity(), "Something wrong with json" ,Toast.LENGTH_LONG).show();
+                                e.printStackTrace();
                             }
 
-                            progressDialog.dismiss();
-
-                        } catch (JSONException e) {
-                            Toast.makeText(getActivity(), "Something wrong with json" ,Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
                         }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
 
+                            Toast.makeText(getActivity(), "Check Your Internet Connection",Toast.LENGTH_LONG).show();
+                        }
                     }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
 
-                        Toast.makeText(getActivity(), "Check Your Internet Connection",Toast.LENGTH_LONG).show();
-                    }
-                }
+            );
+            MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest);
 
-        );
-        MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest);
+            load=5;
+
+            if(swipeRefreshLayout.isRefreshing()){
+                swipeRefreshLayout.setRefreshing(false);
+            }
+
+
+        }
+
     }
 
 
@@ -135,7 +152,7 @@ public class Fragment2 extends Fragment {
 
         Cursor data = myDB.getAlldata();
         if(data.getCount() == 0){
-            Toast.makeText(getActivity(), "Ders YOXDUR!",Toast.LENGTH_LONG).show();
+           // Toast.makeText(getActivity(), "Norestaurant",Toast.LENGTH_LONG).show();
         }else{
 
 
@@ -151,5 +168,14 @@ public class Fragment2 extends Fragment {
             adapter=new MyAdapter(modelList,getActivity());
             recyclerView.setAdapter(adapter);
         }
+    }
+
+
+    @Override
+    public void onRefresh() {
+        load=0;
+        myDB.deleteAll();
+       loadRestaurants();
+
     }
 }

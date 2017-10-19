@@ -11,8 +11,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "map.db";
-    public static final String TABLE_NAME = "GMTable";
+    public static final String DATABASE_NAME = "GMv1.db";
+    public static final String TABLE_NAME = "GMv1Table";
     public static final String COL1 = "ID";
     public static final String COL2 = "NAME";
     public static final String COL3 = "LON";
