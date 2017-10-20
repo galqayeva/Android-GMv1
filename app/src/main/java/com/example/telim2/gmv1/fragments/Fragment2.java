@@ -19,6 +19,7 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.telim2.gmv1.Constants;
 import com.example.telim2.gmv1.Utils.DatabaseHelper;
 import com.example.telim2.gmv1.Utils.GPSTracker;
 import com.example.telim2.gmv1.Utils.Model;
@@ -47,7 +48,7 @@ public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshL
     private ProgressDialog progressDialog;
     private SwipeRefreshLayout swipeRefreshLayout;
     DatabaseHelper myDB;
-    int load=0;
+    int load;
 
 
 
@@ -72,11 +73,12 @@ public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
         url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+Double.toString(latitude)+","+Double.toString(longitude)+"&radius=500&type=restaurant&key=AIzaSyC3_ndLS93DsNFqSB-78VuA00A0hrI8B5A";
 
-
         swipeRefreshLayout.setOnRefreshListener(this);
         loadListview();
 
-        loadRestaurants();
+
+             loadRestaurants();
+
 
 
         return view;
@@ -87,8 +89,9 @@ public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
     public void loadRestaurants(){
 
-        if (load==0)
-        {
+        Cursor data = myDB.getAlldata();
+        if(data.getCount() == 0){
+
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setMessage("Getting Restaurants");
             progressDialog.show();
@@ -113,6 +116,7 @@ public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshL
                                         Log.d("something","getwrong");
 
                                 }
+                                modelList.clear();
                                 loadListview();
                                 progressDialog.dismiss();
 
@@ -128,20 +132,19 @@ public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshL
                         @Override
                         public void onErrorResponse(VolleyError error) {
 
-                            Toast.makeText(getActivity(), "Check Your Internet Connection",Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getActivity(), "Check Your Internet Connection",Toast.LENGTH_LONG).show();
+                            Log.d("erroor","k"+ error.getMessage());
                         }
                     }
 
             );
             MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest);
 
-            load=5;
+
 
             if(swipeRefreshLayout.isRefreshing()){
                 swipeRefreshLayout.setRefreshing(false);
             }
-
-
         }
 
     }
@@ -151,14 +154,11 @@ public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
 
         Cursor data = myDB.getAlldata();
-        if(data.getCount() == 0){
-           // Toast.makeText(getActivity(), "Norestaurant",Toast.LENGTH_LONG).show();
-        }else{
+        if(data.getCount() != 0){
 
+            Log.d("salus","----------"+data.getCount());
 
-            int i=1;
             while(data.moveToNext()){
-                Log.d("salus",data.getString(2)+"--"+"---"+data.getCount());
 
                 Model item=new Model(data.getString(3),data.getString(2),data.getString(1));
                 modelList.add(item);
@@ -175,7 +175,7 @@ public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshL
     public void onRefresh() {
         load=0;
         myDB.deleteAll();
-       loadRestaurants();
+        loadRestaurants();
 
     }
 }

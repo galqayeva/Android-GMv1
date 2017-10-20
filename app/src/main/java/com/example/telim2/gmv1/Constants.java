@@ -7,5 +7,6 @@ package com.example.telim2.gmv1;
 
 public class Constants {
 
-    String url2="http://172.16.200.200/GMv1/check.php?registerId=";
+    public static String url2="http://172.16.200.200/GMv1/check.php?registerId=";
+    public  static int load=0;
 }
