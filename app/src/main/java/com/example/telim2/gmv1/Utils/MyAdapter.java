@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.provider.Settings;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -63,15 +65,13 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
 
         holder.textViewFriend.setText(model.getrName());
 
-        url="http://172.16.200.200/GMv1/demo.php";
+        url="http://172.16.200.200/GMv1/insertRest.php";
 
 
 
         holder.buttonAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (ok==1){
 
 
                     StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
@@ -85,7 +85,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                             new Response.ErrorListener() {
                                 @Override
                                 public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(context,url,Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context,error.getMessage(),Toast.LENGTH_LONG).show();
+                                    Log.d("salus", "a"+error.getMessage());
                                 }
                             }
                     ){
@@ -93,7 +94,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> params = new HashMap<>();
-                            params.put("restName",model.getrName());
+                            params.put("restName",model.getrName()); Log.d("a",model.getrName()+"------"+model.getLat()+"------"+model.getLng());
                             params.put("lon",model.getLng());
                             params.put("lat",model.getLat());
                             params.put("registerId",registerId);
@@ -101,13 +102,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                             return params;
                         }
                     };
+                    stringRequest.setRetryPolicy(new DefaultRetryPolicy(2 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                     MySingleTon.getInstance(context).addToRequestQueue(stringRequest);
 
                     holder.buttonAdd.setText("ok");
-                }else{
-
-                    Toast.makeText(context,"caannnnnooot",Toast.LENGTH_LONG).show();
-                }
 
 
             }
