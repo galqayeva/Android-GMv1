@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,7 +62,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
         final Model model=modelList.get(position);
-        holder.buttonAdd.setText("add");
+        holder.buttonAdd.setText("+");
 
         holder.textViewFriend.setText(model.getrName());
 
@@ -105,7 +106,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                     stringRequest.setRetryPolicy(new DefaultRetryPolicy(2 * 1000, 2, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
                     MySingleTon.getInstance(context).addToRequestQueue(stringRequest);
 
-                    holder.buttonAdd.setText("ok");
+                    holder.buttonAdd.setText("here");
 
 
             }
@@ -122,14 +123,14 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView textViewFriend;
         public Button buttonAdd;
-        public LinearLayout linearLayout;
+        public RelativeLayout relativeLayout;
 
         public ViewHolder(View itemView) {
             super(itemView);
 
             textViewFriend=(TextView)itemView.findViewById(R.id.restaurantName);
             buttonAdd=(Button)itemView.findViewById(R.id.addButton);
-            linearLayout=(LinearLayout)itemView.findViewById(R.id.linearLayout);
+            relativeLayout=(RelativeLayout)itemView.findViewById(R.id.linearLayout);
         }
     }
 }

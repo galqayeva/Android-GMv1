@@ -3,12 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <android.support.v7.widget.CardView
 
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -16,31 +17,29 @@
             <TextView
                 android:id="@+id/restaurantName"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="15dp"
+                android:layout_marginTop="20dp"
                 android:layout_weight=".50"
                 android:text="Friend"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginLeft="10dp"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
+                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
+                android:textSize="16dp" />
 
             <Button
                 android:id="@+id/addButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:width="15dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginTop="12dp"
+                android:layout_height="70dp"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
                 android:background="#0091EA"
                 android:textColor="@color/colorButtonTextColor"
-                android:textAppearance="@style/TextAppearance.AppCompat.Body2"
-                />
+                tools:text="+" />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </android.support.v7.widget.CardView>
-
 
 
 </LinearLayout>
