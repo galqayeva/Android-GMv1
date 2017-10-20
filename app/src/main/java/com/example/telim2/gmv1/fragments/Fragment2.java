@@ -13,8 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -41,60 +39,51 @@ public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshL
     private GPSTracker gpsTracker;
     private Location mLocation;
     double latitude, longitude;
-    String url;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<Model> modelList;
     private ProgressDialog progressDialog;
     private SwipeRefreshLayout swipeRefreshLayout;
     DatabaseHelper myDB;
-    int load;
-
+    String url,Tag="salus";
 
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view=inflater.inflate(R.layout.fragment2,container,false);
 
+        swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout);
+        swipeRefreshLayout.setOnRefreshListener(this);
 
-        myDB = new DatabaseHelper(getActivity());
-
-        gpsTracker = new GPSTracker(getActivity());
-        mLocation = gpsTracker.getLocation();
-
-        latitude = mLocation.getLatitude();
-        longitude = mLocation.getLongitude();
-
-        swipeRefreshLayout=(SwipeRefreshLayout)view.findViewById(R.id.swipeRefreshLayout) ;
         recyclerView=(RecyclerView)view.findViewById(R.id.recycleview);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
+        myDB = new DatabaseHelper(getActivity());
         modelList=new ArrayList<>();
 
-        url="https://maps.googleapis.com/maps/api/place/nearbysearch/json?location="+Double.toString(latitude)+","+Double.toString(longitude)+"&radius=500&type=restaurant&key=AIzaSyC3_ndLS93DsNFqSB-78VuA00A0hrI8B5A";
+        gpsTracker = new GPSTracker(getActivity());
+        latitude = gpsTracker.getLocation().getLatitude();
+        longitude = gpsTracker.getLocation().getLongitude();
 
-        swipeRefreshLayout.setOnRefreshListener(this);
+        url= Constants.gmApi(Double.toString(latitude),Double.toString(longitude),"500");
         loadListview();
-
-
-             loadRestaurants();
-
-
+        loadRestaurants();
 
         return view;
-
     }
-
 
 
     public void loadRestaurants(){
 
         Cursor data = myDB.getAlldata();
-        if(data.getCount() == 0){
 
+        if(data.getCount() == 0)
+        {
             progressDialog = new ProgressDialog(getActivity());
             progressDialog.setMessage("Getting Restaurants");
             progressDialog.show();
+
             StringRequest stringRequest=new StringRequest(Request.Method.POST, url,
                     new Response.Listener<String>() {
                         @Override
@@ -102,67 +91,61 @@ public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
                             try {
                                 JSONObject jsonObject=new JSONObject(response);
-                                JSONArray jsonArray=jsonObject.getJSONArray("results");
+                                JSONArray jsonArrayResult=jsonObject.getJSONArray("results");
 
-                                for (int i=0;i<jsonArray.length();i++) {
-
-                                    JSONObject jsonobject=jsonArray.getJSONObject(i);
+                                for (int i=0;i<jsonArrayResult.length();i++)
+                                {
+                                    JSONObject jsonobject=jsonArrayResult.getJSONObject(i);
                                     String lat = jsonobject.getJSONObject("geometry").getJSONObject("location").getString("lat");
-                                    String lan = jsonobject.getJSONObject("geometry").getJSONObject("location").getString("lng");
-                                    String location=jsonobject.getString("name");
+                                    String lng = jsonobject.getJSONObject("geometry").getJSONObject("location").getString("lng");
+                                    String restaurantName=jsonobject.getString("name");
 
-                                    boolean insertData = myDB.addData(location,lan,lat);
+                                    boolean insertData = myDB.addData(restaurantName,lng,lat);
                                     if(!insertData==true)
-                                        Log.d("something","getwrong");
-
+                                        Log.d(Tag,"Inserting problem");
                                 }
+
                                 modelList.clear();
                                 loadListview();
                                 progressDialog.dismiss();
 
-
                             } catch (JSONException e) {
-                                Toast.makeText(getActivity(), "Something wrong with json" ,Toast.LENGTH_LONG).show();
+
+                                Log.d(Tag, "json parse error");
                                 e.printStackTrace();
                             }
-
                         }
                     },
                     new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
 
-                            //Toast.makeText(getActivity(), "Check Your Internet Connection",Toast.LENGTH_LONG).show();
-                            Log.d("erroor","k"+ error.getMessage());
+                            Log.d(Tag,"String request Response error ----"+ error.getMessage());
                         }
                     }
 
             );
             MySingleTon.getInstance(getActivity()).addToRequestQueue(stringRequest);
 
-
-
-            if(swipeRefreshLayout.isRefreshing()){
+            if(swipeRefreshLayout.isRefreshing())
+            {
                 swipeRefreshLayout.setRefreshing(false);
             }
         }
-
     }
 
 
     public void loadListview(){
 
-
         Cursor data = myDB.getAlldata();
-        if(data.getCount() != 0){
 
-            Log.d("salus","----------"+data.getCount());
-
-            while(data.moveToNext()){
-
-                Model item=new Model(data.getString(3),data.getString(2),data.getString(1));
+        if(data.getCount() != 0)
+        {
+            Log.d(Tag,"----------"+data.getCount());
+            while(data.moveToNext())
+            {
+                Model item=new Model(data.getString(1),data.getString(2),data.getString(3));
                 modelList.add(item);
-
             }
 
             adapter=new MyAdapter(modelList,getActivity());
@@ -173,9 +156,7 @@ public class Fragment2 extends Fragment implements SwipeRefreshLayout.OnRefreshL
 
     @Override
     public void onRefresh() {
-        load=0;
         myDB.deleteAll();
         loadRestaurants();
-
     }
 }

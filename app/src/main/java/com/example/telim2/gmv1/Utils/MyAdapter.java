@@ -61,9 +61,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         final Model model=modelList.get(position);
         holder.buttonAdd.setText("add");
 
-        holder.textViewFriend.setText(model.getName());
+        holder.textViewFriend.setText(model.getrName());
 
-        url="http://172.16.200.200/GMv1/insertRest.php";
+        url="http://172.16.200.200/GMv1/demo.php";
 
 
 
@@ -79,7 +79,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                                 @Override
                                 public void onResponse(String response) {
 
-                                    Toast.makeText(context,model.getName(),Toast.LENGTH_LONG).show();
+                                    Toast.makeText(context,response,Toast.LENGTH_LONG).show();
                                 }
                             },
                             new Response.ErrorListener() {
@@ -93,9 +93,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
                         @Override
                         protected Map<String, String> getParams() throws AuthFailureError {
                             Map<String, String> params = new HashMap<>();
-                            params.put("restName",model.getName());
-                            params.put("lon",model.getLon());
-                            params.put("lat",model.getLan());
+                            params.put("restName",model.getrName());
+                            params.put("lon",model.getLng());
+                            params.put("lat",model.getLat());
                             params.put("registerId",registerId);
                             params.put("onrest","1");
                             return params;
@@ -121,11 +121,6 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
         return modelList.size();
     }
 
-    public void saveSettings() {
-
-
-    }
-
     public class ViewHolder extends RecyclerView.ViewHolder{
         public TextView textViewFriend;
         public Button buttonAdd;
@@ -135,7 +130,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.ViewHolder> {
             super(itemView);
 
             textViewFriend=(TextView)itemView.findViewById(R.id.restaurantName);
-          buttonAdd=(Button)itemView.findViewById(R.id.addButton);
+            buttonAdd=(Button)itemView.findViewById(R.id.addButton);
             linearLayout=(LinearLayout)itemView.findViewById(R.id.linearLayout);
         }
     }

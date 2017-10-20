@@ -5,35 +5,35 @@ package com.example.telim2.gmv1.Utils;
  */
 
 public class Model {
-    String lon,lan,name;
+    String lat,lng,rName;
 
-    public Model(String lon, String lan, String name) {
-        this.lon = lon;
-        this.lan = lan;
-        this.name = name;
+    public Model(String rName, String lng, String lat) {
+        this.lng = lng;
+        this.lat = lat;
+        this.rName = rName;
     }
 
-    public String getLon() {
-        return lon;
+    public String getLat() {
+        return lat;
     }
 
-    public void setLon(String lon) {
-        this.lon = lon;
+    public void setLat(String lat) {
+        this.lat = lat;
     }
 
-    public String getLan() {
-        return lan;
+    public String getLng() {
+        return lng;
     }
 
-    public void setLan(String lan) {
-        this.lan = lan;
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
-    public  String getName() {
-        return name;
+    public String getrName() {
+        return rName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setrName(String rName) {
+        this.rName = rName;
     }
 }
